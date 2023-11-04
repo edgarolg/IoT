@@ -2,9 +2,7 @@
     Este codigo es para correr en la raspberry pi con un shield un led y que este prenda y apague
     usando el servicio de apis de postman
 """
-import json
-from flask import Flask
-from flask import request, jsonify
+from flask import Flask, request, jsonify
 from grovepi import *
 
 app = Flask(__name__)
@@ -18,12 +16,11 @@ def hello():
 
 
 @app.route('/led', methods=['PUT'])
-def control_led():
-
-
+def controlLed():
+    
+    data = request.get_json()
     if request.method == 'PUT':
-        data = request.get_json()
-
+    
         if 'estado' in data:
             digitalWrite(led1, data['estado'])
             return jsonify({'message': 'Estado del LED actualizado correctamente'})
@@ -33,4 +30,4 @@ def control_led():
 
 
 if __name__ == "main":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=8080)
